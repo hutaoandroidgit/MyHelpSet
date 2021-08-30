@@ -1,2 +1,3 @@
+include ':helplibrary'
 include ':app'
 rootProject.name = "MyHelpSet"
