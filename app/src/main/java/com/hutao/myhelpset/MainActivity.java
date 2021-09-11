@@ -3,8 +3,14 @@ package com.hutao.myhelpset;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.hutao.helplibrary.Tool;
+import com.hutao.myhelpset.base.BaseActivity;
+import com.hutao.myhelpset.tool.annotation.RegisterView;
+import com.hutao.myhelpset.tool.leakcanary.LeakCanaryAcitvity;
+
 /**
  * @description 测试主act入口
  * @param 
@@ -12,8 +18,9 @@ import com.hutao.helplibrary.Tool;
  * @author hutao
  * @time 2021/9/6 17:00
  */
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends BaseActivity {
+    @RegisterView(id = R.id.testBtnLeakCanary)
+    private Button testBtnLeakCanary;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,9 +29,18 @@ public class MainActivity extends AppCompatActivity {
         //jitpack引用包测试
         //testJitPack();
 
-
         //LeakCanary检测工具测试
         testLeakCanary();
+    }
+
+    @Override
+    protected void initContentComponentValue() {
+
+    }
+
+    @Override
+    protected void createListeners() {
+
     }
 
     /**
@@ -35,7 +51,13 @@ public class MainActivity extends AppCompatActivity {
      * @time 2021/9/6 16:58
      */
     private void testLeakCanary() {
-
+        testBtnLeakCanary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //模拟内存泄漏代码
+                openActivity(LeakCanaryAcitvity.class);
+            }
+        });
     }
 
     /**
