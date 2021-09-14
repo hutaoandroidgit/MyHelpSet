@@ -23,6 +23,17 @@
         android:text="Profiler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:singleLine="true"
+        android:visibility="gone">
+    </Button>
+
+    <Button
+        android:id="@+id/testBtnOkHttp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OkHttp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:singleLine="true">
     </Button>
 

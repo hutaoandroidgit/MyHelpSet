@@ -547,6 +547,6 @@ public class OsduiLogManager implements LogAsyncTask.ICallback<OsdUILogInfo>{
         String tag = getTagByObj(mLog.getmTag());
 
         logcatLog(mLog.getmEmLevel(),content,tag);
-        log4jLog(mLog.getmEmLevel(),content,tag);
+        //log4jLog(mLog.getmEmLevel(),content,tag);
     }
 }

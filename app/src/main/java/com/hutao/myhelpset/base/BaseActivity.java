@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.hutao.helplibrary.log.MtuiLogcat;
 import com.hutao.myhelpset.tool.annotation.RegisterEventManager;
 
 /**
@@ -21,6 +22,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(getLayoutResId());
+        initContentValue();
     }
 
     @Override
@@ -53,17 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onRestart();
     }
 
-    /**
-     * 默认setContentView不需要再设置隐藏Title
-     *
-     * @see android.app.Activity#setContentView(int)
-     */
-    @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-        initContentValue();
-    }
-
+    protected abstract int getLayoutResId();
     /**
      * 对ContentView的初始化值：findViews(), initContentComponentValue(),
      * createListeners();
@@ -73,6 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * </pre>
      */
     protected void initContentValue() {
+        MtuiLogcat.getInstance().setLogType(1);
         RegisterEventManager.findViewsById(getWindow().getDecorView(),this);
         findViews();
         initContentComponentValue();

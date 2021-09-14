@@ -22,13 +22,11 @@ public class LeakCanaryAcitvity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leak);
-        testBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtil.showToast(LeakCanaryAcitvity.this,"检测内存泄漏");
-            }
-        });
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_leak;
     }
 
     @Override
@@ -38,6 +36,11 @@ public class LeakCanaryAcitvity extends BaseActivity {
 
     @Override
     protected void createListeners() {
-
+        testBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtil.showToast(LeakCanaryAcitvity.this,"检测内存泄漏");
+            }
+        });
     }
 }

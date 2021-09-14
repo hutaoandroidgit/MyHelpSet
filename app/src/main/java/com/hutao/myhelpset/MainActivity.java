@@ -1,13 +1,12 @@
 package com.hutao.myhelpset;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.hutao.helplibrary.Tool;
 import com.hutao.myhelpset.base.BaseActivity;
+import com.hutao.myhelpset.tool.okhttp.OkHttpAcitvity;
 import com.hutao.myhelpset.tool.annotation.RegisterView;
 import com.hutao.myhelpset.tool.leakcanary.LeakCanaryAcitvity;
 import com.hutao.myhelpset.tool.profiler.ProfilerAcitvity;
@@ -24,11 +23,13 @@ public class MainActivity extends BaseActivity {
     private Button testBtnLeakCanary;
     @RegisterView(id = R.id.testBtnProfiler)
     private Button testBtnProfiler;
+    @RegisterView(id = R.id.testBtnOkHttp)
+    private Button testBtnOkHttp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        
+
         //jitpack引用包测试
         //testJitPack();
 
@@ -37,8 +38,18 @@ public class MainActivity extends BaseActivity {
         
         //Memory Profiler查找内存泄露
         //testProfiler();
+
+        //Alibaba Java Guidelines日常编码 提示错误实例
+        //testGuidelines();
+
+        //okhttp使用测试
+        testOkHttp();
     }
 
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_main;
+    }
 
 
     @Override
@@ -50,6 +61,50 @@ public class MainActivity extends BaseActivity {
     protected void createListeners() {
 
     }
+
+    /**
+     * @description okhttp使用测试
+     * @param
+     * @return
+     * @author hutao
+     * @time 2021/9/14 19:05
+     */
+    private void testOkHttp() {
+        testBtnOkHttp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //模拟内存泄漏代码
+                openActivity(OkHttpAcitvity.class);
+            }
+        });
+    }
+    /**
+     * @description Alibaba Java Guidelines日常编码 提示错误实例
+     * @param
+     * @return
+     * @author hutao
+     * @time 2021/9/14 13:15
+     */
+    private void testGuidelines() {
+        int type = 1;
+        switch(type){
+            case 0:
+
+                break;
+            case 1:
+
+                break;
+            case 2:
+                break;
+        }
+        String str = "1";
+        if (str.equals("1")){
+
+        }else if (str.equals("2")){
+
+        }
+    }
+
     /**
      * @description Memory Profiler查找内存泄露实例测试
      * @param 
