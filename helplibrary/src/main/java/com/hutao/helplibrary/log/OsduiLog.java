@@ -37,8 +37,7 @@ public class OsduiLog {
     
     /**
     *
-    * @param obj:自定义TAG
-    * @param Content
+    * @param mTag:自定义TAG
     * @param comments
     */
    public static void mtuiCallbackLog(Object mTag,String keyName,String strJsonContent,String comments)

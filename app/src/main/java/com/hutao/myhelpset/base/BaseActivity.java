@@ -17,7 +17,7 @@ import com.hutao.myhelpset.tool.annotation.RegisterEventManager;
  * @date: 2021/9/8
  */
 public abstract class BaseActivity extends AppCompatActivity {
-
+    public final String TAG = this.getClass().getSimpleName();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

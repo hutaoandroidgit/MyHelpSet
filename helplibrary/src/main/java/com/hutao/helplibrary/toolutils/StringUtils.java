@@ -303,7 +303,6 @@ public class StringUtils
 	 * 将0-10的数字转换为中文数字
 	 * 
 	 * @Description
-	 * @param num
 	 * @return
 	 */
 /*	public static String convertNumeral2ChineseNum(int num)

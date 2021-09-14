@@ -1,0 +1,11 @@
+<?xml version ="1.0" encoding ="utf-8"?>
+<lint>
+    <issue id="HardcodedText" severity="ignore" />
+    <issue id="SmallSp" severity="ignore" />
+    <issue id="AddJavascriptInterface" severity="ignore" />
+    <issue id="AdapterViewChildren" severity="warning" />
+    <issue id="AllowBackup" severity="ignore" />
+    <issue id="Deprecated" severity="warning">
+        <ignore regexp="singleLine" />
+    </issue>
+</lint>

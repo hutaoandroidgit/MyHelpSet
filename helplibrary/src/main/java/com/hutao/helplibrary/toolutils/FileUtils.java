@@ -243,7 +243,7 @@ public final class FileUtils
 	/**
 	 * 以String形式返回文件内容
 	 * 
-	 * @param aFile
+	 * @param path
 	 * @return
 	 */
 	public static String getFileString(String path)
@@ -271,7 +271,7 @@ public final class FileUtils
 	/**
 	 * 用新的内容替换原有File内容
 	 * 
-	 * @param aFile
+	 * @param path
 	 * @param newString
 	 * @return
 	 */
@@ -330,7 +330,7 @@ public final class FileUtils
 
 	/**
 	 * 删除文件夹
-	 * @param path
+	 * @param folderPath
 	 */
 	public static void delFolder(String folderPath)
 	{

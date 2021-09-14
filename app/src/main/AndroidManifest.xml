@@ -16,6 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".tool.leakcanary.LeakCanaryAcitvity"></activity>
+        <activity android:name=".tool.profiler.ProfilerAcitvity"></activity>
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/lint" />
     </application>
 
 </manifest>
