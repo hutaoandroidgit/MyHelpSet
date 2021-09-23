@@ -21,6 +21,7 @@
         <activity android:name=".tool.leakcanary.LeakCanaryAcitvity"></activity>
         <activity android:name=".tool.profiler.ProfilerAcitvity"></activity>
         <activity android:name=".tool.okhttp.OkHttpAcitvity"></activity>
+        <activity android:name=".tool.rxjava.RxJavaAcitvity"></activity>
     </application>
 
 </manifest>

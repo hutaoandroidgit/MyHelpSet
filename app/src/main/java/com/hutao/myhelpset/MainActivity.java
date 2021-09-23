@@ -5,11 +5,15 @@ import android.view.View;
 import android.widget.Button;
 
 import com.hutao.helplibrary.Tool;
+import com.hutao.helplibrary.log.OsduiLog;
 import com.hutao.myhelpset.base.BaseActivity;
+import com.hutao.myhelpset.mode.observer.MilkConsumer;
+import com.hutao.myhelpset.mode.observer.MilkFactory;
 import com.hutao.myhelpset.tool.okhttp.OkHttpAcitvity;
 import com.hutao.myhelpset.tool.annotation.RegisterView;
 import com.hutao.myhelpset.tool.leakcanary.LeakCanaryAcitvity;
 import com.hutao.myhelpset.tool.profiler.ProfilerAcitvity;
+import com.hutao.myhelpset.tool.rxjava.RxJavaAcitvity;
 
 /**
  * @description 测试主act入口
@@ -25,7 +29,9 @@ public class MainActivity extends BaseActivity {
     private Button testBtnProfiler;
     @RegisterView(id = R.id.testBtnOkHttp)
     private Button testBtnOkHttp;
-
+    @RegisterView(id = R.id.testBtnRxjava)
+    private Button testBtnRxjava;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +48,13 @@ public class MainActivity extends BaseActivity {
         //Alibaba Java Guidelines日常编码 提示错误实例
         //testGuidelines();
 
-        //okhttp使用测试
-        testOkHttp();
+        //okhttp使用测试 ，入门测试，后期使用kotlin以及框架理解
+        //testOkHttp();
+
+        //观察者模式了解 ，便于理解RxJava框架
+        //testObserver();
+        //测试Rxjava功能用法
+        testRxJava();
     }
 
     @Override
@@ -61,7 +72,41 @@ public class MainActivity extends BaseActivity {
     protected void createListeners() {
 
     }
-
+    
+    /**
+     * @description 测试RxJava
+     * @param 
+     * @return 
+     * @author hutao
+     * @time 2021/9/17 11:17
+     */
+    private void testRxJava() {
+        testBtnRxjava.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(RxJavaAcitvity.class);
+            }
+        });
+    }
+    
+    /**
+     * @description 观察者模式
+     * @param
+     * @return
+     * @author hutao
+     * @time 2021/9/16 13:42
+     */
+    private void testObserver() {
+        MilkConsumer consumer1 = new MilkConsumer("hutao");
+        MilkConsumer consumer2 = new MilkConsumer("jmz");
+        MilkFactory factory = new MilkFactory();
+        //订阅过程
+        factory.subscribe(consumer1);
+        factory.subscribe(consumer2);
+        OsduiLog.mtuiHintLog(TAG,"牛奶店已产出牛奶，通知发放顾客");
+        //发布过程
+        factory.onNext();
+    }
     /**
      * @description okhttp使用测试
      * @param

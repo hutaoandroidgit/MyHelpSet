@@ -271,15 +271,14 @@ public final class FileUtils
 	/**
 	 * 用新的内容替换原有File内容
 	 * 
-	 * @param path
 	 * @param newString
 	 * @return
 	 */
 	public static boolean replaceFileContent(String filePath, String newString)
 	{
-		if (StringUtils.isNull(filePath))
+		if (StringUtils.isNull(filePath)){
 			return false;
-
+		}
 		boolean bResult = true;
 		try
 		{

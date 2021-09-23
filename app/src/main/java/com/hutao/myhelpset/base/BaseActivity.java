@@ -66,6 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * </pre>
      */
     protected void initContentValue() {
+        //打印控制开启全部打印
         MtuiLogcat.getInstance().setLogType(1);
         RegisterEventManager.findViewsById(getWindow().getDecorView(),this);
         findViews();

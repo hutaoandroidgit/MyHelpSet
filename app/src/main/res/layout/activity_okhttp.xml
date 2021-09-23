@@ -5,12 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <Button
-        android:id="@+id/testGet"
+        android:id="@+id/testSynchroGet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="Get">
+        android:text="SynchroGet">
+    </Button>
+    <Button
+        android:id="@+id/testAsynchronousGet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/testSynchroGet"
+        android:text="AsynchronousGet">
+    </Button>
+    <Button
+        android:id="@+id/testSynchroPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/testAsynchronousGet"
+        android:text="SynchroPost">
+    </Button>
+
+    <Button
+        android:id="@+id/testAsynchronousPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/testSynchroPost"
+        android:text="AsynchronousPost">
     </Button>
 
     <TextView

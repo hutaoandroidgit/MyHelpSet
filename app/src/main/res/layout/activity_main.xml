@@ -34,6 +34,17 @@
         android:text="OkHttp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:singleLine="true"
+        android:visibility="gone">
+    </Button>
+
+    <Button
+        android:id="@+id/testBtnRxjava"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rxjava"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:singleLine="true">
     </Button>
 
