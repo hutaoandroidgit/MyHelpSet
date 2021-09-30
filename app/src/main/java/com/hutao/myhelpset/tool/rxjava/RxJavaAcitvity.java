@@ -12,30 +12,54 @@ import com.hutao.myhelpset.R;
 import com.hutao.myhelpset.base.BaseActivity;
 import com.hutao.myhelpset.tool.annotation.RegisterView;
 
+import org.reactivestreams.Subscription;
+
 import java.io.Serializable;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableObserver;
+import io.reactivex.CompletableOnSubscribe;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.FlowableSubscriber;
+import io.reactivex.Maybe;
+import io.reactivex.MaybeEmitter;
+import io.reactivex.MaybeObserver;
+import io.reactivex.MaybeOnSubscribe;
+import io.reactivex.Notification;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleObserver;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
+import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.observables.GroupedObservable;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.schedulers.Timed;
 
 /**
  * @author: hutao
@@ -52,6 +76,7 @@ public class RxJavaAcitvity extends BaseActivity {
     private Button testRxjava4;
     @RegisterView(id = R.id.testRxjava5)
     private Button testRxjava5;
+
 
     @RegisterView(id = R.id.testRxCreate)
     private Button testRxCreate;
@@ -111,9 +136,84 @@ public class RxJavaAcitvity extends BaseActivity {
     private Button testJoin;
     @RegisterView(id = R.id.testConbineLates)
     private Button testConbineLates;
-
+    @RegisterView(id = R.id.testOnErrorReturn)
+    private Button testOnErrorReturn;
+    @RegisterView(id = R.id.testOnErrorResumeNext)
+    private Button testOnErrorResumeNext;
+    @RegisterView(id = R.id.testOnExceptionResumeNext)
+    private Button testOnExceptionResumeNext;
+    @RegisterView(id = R.id.testReTry)
+    private Button testReTry;
+    @RegisterView(id = R.id.testReTryWhen)
+    private Button testReTryWhen;
+    @RegisterView(id = R.id.testDelay)
+    private Button testDelay;
+    @RegisterView(id = R.id.testDo)
+    private Button testDo;
+    @RegisterView(id = R.id.testMaterialize_Dematerialize)
+    private Button testMaterialize_Dematerialize;
+    @RegisterView(id = R.id.testSerialize)
+    private Button testSerialize;
+    @RegisterView(id = R.id.testTimeInterval)
+    private Button testTimeInterval;
     @RegisterView(id = R.id.testTvContent)
     private TextView testTvContent;
+    @RegisterView(id = R.id.testTimeOut)
+    private TextView testTimeOut;
+    @RegisterView(id = R.id.testTimestamp)
+    private TextView testTimestamp;
+    @RegisterView(id = R.id.testUseing)
+    private TextView testUseing;
+    @RegisterView(id = R.id.testTo)
+    private TextView testTo;
+    @RegisterView(id = R.id.testAll)
+    private TextView testAll;
+    @RegisterView(id = R.id.testContains)
+    private TextView testContains;
+    @RegisterView(id = R.id.testAmb)
+    private TextView testAmb;
+    @RegisterView(id = R.id.testDefaulIfEmpty)
+    private TextView testDefaulIfEmpty;
+    @RegisterView(id = R.id.testSequenceEqual)
+    private TextView testSequenceEqual;
+    @RegisterView(id = R.id.testSkipUntil)
+    private TextView testSkipUntil;
+    @RegisterView(id = R.id.testSkipWhile)
+    private TextView testSkipWhile;
+    @RegisterView(id = R.id.testReduce)
+    private TextView testReduce;
+    @RegisterView(id = R.id.testCollect)
+    private TextView testCollect;
+    @RegisterView(id = R.id.testPublish)
+    private TextView testPublish;
+    @RegisterView(id = R.id.testConnect)
+    private TextView testConnect;
+    @RegisterView(id = R.id.testRefCount)
+    private TextView testRefCount;
+    @RegisterView(id = R.id.testRePlay)
+    private TextView testRePlay;
+
+
+    @RegisterView(id = R.id.testFlowable)
+    private TextView testFlowable;
+    @RegisterView(id = R.id.testSingle)
+    private TextView testSingle;
+    @RegisterView(id = R.id.testCompletable)
+    private TextView testCompletable;
+    @RegisterView(id = R.id.testMaybe)
+    private TextView testMaybe;
+
+    @RegisterView(id = R.id.testMISSING)
+    private TextView testMISSING;
+    @RegisterView(id = R.id.testERROR)
+    private TextView testERROR;
+    @RegisterView(id = R.id.testBUFFER)
+    private TextView testBUFFER;
+    @RegisterView(id = R.id.testDROP)
+    private TextView testDROP;
+    @RegisterView(id = R.id.testLATEST)
+    private TextView testLATEST;
+
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -763,9 +863,904 @@ public class RxJavaAcitvity extends BaseActivity {
                 });
             }
         });
+        testOnErrorReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(@NonNull ObservableEmitter<Integer> emitter) throws Exception {
+                        for (int j = 0; j < 7; j++) {
+                            if (j == 4){
+                                emitter.onError(new Exception("error"));
+                            }
+                            emitter.onNext(j);
+                        }
+                    }
+                }).onErrorReturn(new Function<Throwable, Integer>() {
+                    @Override
+                    public Integer apply(@NonNull Throwable throwable) throws Exception {
+                        return  -1;
+                    }
+                }).subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG,"########Observer onErrorReturn accept########" + integer);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG,"########Observer onErrorReturn throwable########");
+                    }
+                });
+            }
+        });
+        testOnErrorResumeNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(@NonNull ObservableEmitter<Integer> emitter) throws Exception {
+                        for (int j = 0; j < 7; j++) {
+                            if (j == 4){
+                                emitter.onError(new Exception("error"));
+                            }
+                            emitter.onNext(j);
+                        }
+                    }
+                }).onErrorResumeNext(new Function<Throwable, ObservableSource<? extends Integer>>() {
+                    @Override
+                    public ObservableSource<? extends Integer> apply(@NonNull Throwable throwable) throws Exception {
+                        return Observable.just(-1);
+                    }
+                }).subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG,"########Observer onErrorResumeNext accept########" + integer);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG,"########Observer onErrorResumeNext throwable########");
+                    }
+                });
+            }
+        });
+        testOnExceptionResumeNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(@NonNull ObservableEmitter<Integer> emitter) throws Exception {
+                        for (int j = 0; j < 7; j++) {
+                            if (j == 4){
+                                emitter.onError(new Exception("error"));
+                                //emitter.onError(new Error("error"));
+                            }
+                            emitter.onNext(j);
+                        }
+                    }
+                }).onExceptionResumeNext(new ObservableSource<Integer>() {
+                    @Override
+                    public void subscribe(@NonNull Observer<? super Integer> observer) {
+                        observer.onNext(8);
+                    }
+                }).subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG,"########Observer onExceptionResumeNext accept########" + integer);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG,"########Observer onExceptionResumeNext throwable########");
+                    }
+                });
+            }
+        });
+
+        testReTry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(@NonNull ObservableEmitter<Integer> emitter) throws Exception {
+                        for (int j = 0; j < 7; j++) {
+                            if (j == 4){
+                                emitter.onError(new Exception("error"));
+                            }
+                            emitter.onNext(j);
+                        }
+                    }
+                }).retry(1).onErrorReturn(new Function<Throwable, Integer>() {
+                    @Override
+                    public Integer apply(@NonNull Throwable throwable) throws Exception {
+                        return -1;
+                    }
+                }).subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer retry accept########" + integer);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer retry Throwable########");
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer retry onComplete########");
+                    }
+                });
+            }
+        });
+
+        testReTryWhen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.create(new ObservableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
+                        for (int i = 1; i < 5; i++) {
+                            if (i == 4) {
+                                e.onError(new Exception("onError crash"));
+                            }
+                            e.onNext(i);
+                        }
+                    }
+                }) .retryWhen(new Function<Observable<Throwable>, ObservableSource<?>>() {
+                            @Override
+                            public ObservableSource<?> apply(Observable<Throwable> throwableObservable) throws Exception {
+                                return throwableObservable.flatMap(new Function<Throwable, ObservableSource<?>>() {
+                                    @Override
+                                    public ObservableSource<?> apply(Throwable throwable) throws Exception {
+                                        if (++retryCount <= maxRetries) {
+                                            // When this Observable calls onNext, the original Observable will be retried (i.e. re-subscribed).
+                                            OsduiLog.mtuiHintLog(TAG, "get error, it will try after " + 1 + " seconds, retry count " + retryCount);
+                                            return Observable.timer(1, TimeUnit.SECONDS);
+                                        }
+                                        return Observable.error(throwable);
+                                    }
+                                });
+                            }
+                        })
+                        .onErrorReturn(new Function<Throwable, Integer>() {
+                            @Override
+                            public Integer apply(Throwable throwable) throws Exception {
+                                return -1;
+                            }
+                        })
+                        .subscribe(new Consumer<Integer>() {
+                            @Override
+                            public void accept(Integer integer) throws Exception {
+                                OsduiLog.mtuiHintLog(TAG, "########Observer retryWhen accept########" + integer);
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                OsduiLog.mtuiHintLog(TAG, "########Observer retryWhen Throwable########");
+                            }
+                        }, new Action() {
+
+                            @Override
+                            public void run() throws Exception {
+                                OsduiLog.mtuiHintLog(TAG, "########Observer retryWhen onComplete########");
+                            }
+                        });
+            }
+        });
+        testDelay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OsduiLog.mtuiHintLog(TAG, "########Observer delay start########");
+                Observable.just(1,2,3).delay(5,TimeUnit.SECONDS).subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer delay accept########" + integer);
+                    }
+                });
+            }
+        });
+        testDo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.just(1,2,3).doOnNext(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer doOnNext ########");
+                    }
+                }).doOnEach(new Consumer<Notification<Integer>>() {
+                    @Override
+                    public void accept(Notification<Integer> integerNotification) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer doOnEach ########");
+                    }
+                }).doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer doOnSubscribe ########");
+                    }
+                }).doOnDispose(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer doOnDispose ########");
+                    }
+                }).doOnTerminate(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer doOnTerminate ########");
+                    }
+                }).doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer doOnError ########");
+                    }
+                }).doOnComplete(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer doOnComplete ########");
+                    }
+                }).doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer doFinally ########");
+                    }
+                }).subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer do accept########" + integer);
+                    }
+                });
+            }
+        });
+
+        testMaterialize_Dematerialize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.just(1,2,3).materialize().subscribe(new Consumer<Notification<Integer>>() {
+                    @Override
+                    public void accept(Notification<Integer> integerNotification) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer materialize accept########" + integerNotification.getValue());
+                    }
+                });
+                Observable.just(1,2,3).materialize().dematerialize().subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer dematerialize accept########" + o.toString());
+                    }
+                });
+            }
+        });
+        testSerialize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.just(1,2,3).serialize().subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer serialize accept########" + integer);
+                    }
+                });
+            }
+        });
+
+        testTimeInterval.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.interval(2,TimeUnit.SECONDS).timeInterval(TimeUnit.SECONDS).subscribe(new Consumer<Timed<Long>>() {
+                    @Override
+                    public void accept(Timed<Long> longTimed) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer timeInterval ########value:" + longTimed.value() + "time:"+longTimed.time());
+                    }
+                });
+            }
+        });
+
+        testTimeOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.interval(2,TimeUnit.SECONDS).timeout(1,TimeUnit.SECONDS).subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer timeout accept########" + aLong);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer timeout error########");
+                    }
+                });
+            }
+        });
+        testTimestamp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.interval(2,TimeUnit.SECONDS).timestamp(TimeUnit.MILLISECONDS).subscribe(new Consumer<Timed<Long>>() {
+                    @Override
+                    public void accept(Timed<Long> longTimed) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer timestamp ########value:" + longTimed.value() + "time:"+longTimed.time());
+                    }
+                });
+            }
+        });
+        testUseing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.using(new Callable<UserBean>() {
+                    @Override
+                    public UserBean call() throws Exception {
+                        //从网络中获取某个对象
+                        return new UserBean("hutao", 18);
+                    }
+                }, new Function<UserBean, ObservableSource<?>>() {
+                    @Override
+                    public ObservableSource<?> apply(@NonNull UserBean userBean) throws Exception {
+                        return Observable.just(userBean.name);
+                    }
+                }, new Consumer<UserBean>() {
+                    @Override
+                    public void accept(UserBean userBean) throws Exception {
+                        userBean = null;
+                    }
+                }).subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer using accept########" + o.toString());
+                    }
+                });
+            }
+        });
+        testTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.just(1,2,3,4,5).toList().subscribe(new Consumer<List<Integer>>() {
+                    @Override
+                    public void accept(List<Integer> integers) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer to accept########" + integers.toString());
+                    }
+                });
+            }
+        });
+        testAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.just(1,2,3,4,5).all(new Predicate<Integer>() {
+                    @Override
+                    public boolean test(@NonNull Integer integer) throws Exception {
+                        return integer > 2;
+                    }
+                }).subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer all accept########" + aBoolean.toString());
+                    }
+                });
+            }
+        });
+        testContains.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.just(1,2,3,4,5).contains(2).subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer contains accept########" + aBoolean.toString());
+                    }
+                });
+            }
+        });
+        testAmb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Observable<Integer>> list = new ArrayList<>();
+                list.add(Observable.just(1,2,3).delay(3,TimeUnit.SECONDS));
+                list.add(Observable.just(4,5,6).delay(2,TimeUnit.SECONDS));
+                list.add(Observable.just(7,8,9).delay(1,TimeUnit.SECONDS));
+                Observable.amb(list).subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer amb accept########" + integer.toString());
+                    }
+                });
+            }
+        });
+        testDefaulIfEmpty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.empty().defaultIfEmpty(-1).subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer defaultIfEmpty accept########" + o.toString());
+                    }
+                });
+            }
+        });
+
+        testSequenceEqual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable<Integer> just1 = Observable.just(1,2,3);
+                Observable<Integer> just2 = Observable.just(1,2,3);
+                Observable.sequenceEqual(just1,just2).subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer sequenceEqual accept########" + aBoolean.toString());
+                    }
+                });
+            }
+        });
+        testSkipUntil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable<Long> just1 = Observable.interval(1, TimeUnit.SECONDS);
+                Observable<Integer> just2 = Observable.just(8).delay(3, TimeUnit.SECONDS);
+                OsduiLog.mtuiHintLog(TAG, "########Observer skipUntil start########" );
+                just1.skipUntil(just2)
+                        .subscribe(new Consumer<Long>() {
+                            @Override
+                            public void accept(Long aLong) throws Exception {
+                                OsduiLog.mtuiHintLog(TAG, "########Observer skipUntil accept########" + aLong);
+                            }
+                        });
+            }
+        });
+        testSkipWhile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.just(1,2,3,4,5).skipWhile(new Predicate<Integer>() {
+                    @Override
+                    public boolean test(@NonNull Integer integer) throws Exception {
+                        return integer < 3;
+                    }
+                }).subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer skipWhile accept########" + integer);
+                    }
+                });
+            }
+        });
+        testReduce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.just(8,1,15,6,3).reduce(new BiFunction<Integer, Integer, Integer>() {
+                    @NonNull
+                    @Override
+                    public Integer apply(@NonNull Integer integer, @NonNull Integer integer2) throws Exception {
+                        return integer < integer2 ? integer : integer2;
+                    }
+                }).subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer reduce accept########" + integer);
+                    }
+                });
+            }
+        });
+        testCollect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable.just(8,1,15,6,3).collect(new Callable<String>() {
+                    @Override
+                    public String call() throws Exception {
+                        return "A";
+                    }
+                }, new BiConsumer<String, Integer>() {
+                    @Override
+                    public void accept(String s, Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer collect1 accept########" + s + integer);
+                    }
+                }).subscribe(new BiConsumer<String, Throwable>() {
+                    @Override
+                    public void accept(String s, Throwable throwable) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer collect2 accept########" + s );
+                    }
+                });
+            }
+        });
+        testPublish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConnectableObservable<Integer> connectableObservable = Observable.just(1, 2, 3, 4, 5).publish();
+                connectableObservable.subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer publish accept########" + integer);
+                    }
+                });
+            }
+        });
+        testConnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConnectableObservable<Integer> connectableObservable = Observable.just(1, 2, 3, 4, 5).publish();
+                connectableObservable.subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer connect accept########" + integer);
+                    }
+                });
+                connectableObservable.connect();
+            }
+        });
+        testRefCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConnectableObservable<Integer> connectableObservable = Observable.just(1, 2, 3, 4, 5).publish();
+                connectableObservable.refCount().subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(Integer integer) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer refCount accept########" + integer);
+                    }
+                });
+            }
+        });
+        testRePlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConnectableObservable<Long> connectableObservable = Observable.interval(1,TimeUnit.SECONDS).replay();
+                connectableObservable.connect();
+                connectableObservable.delaySubscription(3,TimeUnit.SECONDS).subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG, "########Observer replay accept########" + aLong);
+                    }
+                });
+            }
+        });
+
+        testFlowable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Flowable.create(new FlowableOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(@NonNull FlowableEmitter<String> emitter) throws Exception {
+                        OsduiLog.mtuiHintLog(TAG,"########Observable subscribe########");
+                        emitter.onNext("创建的时候传入ObservableOnSubscribe接口");
+                        emitter.onNext("订阅了一个观察者");
+                        emitter.onNext("订阅之后带上发射器接口回调");
+                        emitter.onNext("发射器发射消息回调到观察者的方法");
+                        emitter.onComplete();
+                    }
+                }, BackpressureStrategy.DROP)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new FlowableSubscriber<String>() {
+                            @Override
+                            public void onSubscribe(@NonNull Subscription s) {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onSubscribe########");
+                                s.request(2);
+                            }
+
+                            @Override
+                            public void onNext(String s) {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onNext########"+s);
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onError########");
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onComplete########");
+                            }
+                        });
+            }
+        });
+        testSingle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Single.create(new SingleOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(@NonNull SingleEmitter<String> emitter) throws Exception {
+                        emitter.onSuccess("success");
+                    }
+                }).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new SingleObserver<String>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onSubscribe########");
+                            }
+
+                            @Override
+                            public void onSuccess(@NonNull String s) {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onSuccess########");
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onError########");
+                            }
+                        });
+
+            }
+        });
+        testCompletable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Completable.create(new CompletableOnSubscribe() {
+                    @Override
+                    public void subscribe(@NonNull CompletableEmitter emitter) throws Exception {
+                        emitter.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onSubscribe########");
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onComplete########");
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onError########");
+                            }
+                        });
+            }
+        });
+        testMaybe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Maybe.create(new MaybeOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(@NonNull MaybeEmitter<String> emitter) throws Exception {
+                        emitter.onSuccess("success");
+                        emitter.onComplete();
+                    }
+                }).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new MaybeObserver<String>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onSubscribe########");
+                            }
+
+                            @Override
+                            public void onSuccess(@NonNull String s) {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onSuccess########");
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onError########");
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onComplete########");
+                            }
+                        });
+            }
+        });
+
+        testMISSING.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Flowable.create(new FlowableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(@NonNull FlowableEmitter<Integer> emitter) throws Exception {
+                        for (int j = 0; j < 129; j++) {
+                            emitter.onNext(j);
+                        }
+                    }
+                },BackpressureStrategy.MISSING)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new FlowableSubscriber<Integer>() {
+                            @Override
+                            public void onSubscribe(@NonNull Subscription s) {
+                                s.request(Long.MAX_VALUE);
+                            }
+
+                            @Override
+                            public void onNext(Integer integer) {
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onNext########"+ integer);
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                t.printStackTrace();
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+            }
+        });
+
+        testERROR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Flowable.create(new FlowableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(@NonNull FlowableEmitter<Integer> emitter) throws Exception {
+                        for (int j = 0; j < 129; j++) {
+                            emitter.onNext(j);
+                        }
+                    }
+                },BackpressureStrategy.ERROR)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new FlowableSubscriber<Integer>() {
+                            @Override
+                            public void onSubscribe(@NonNull Subscription s) {
+                                s.request(Long.MAX_VALUE);
+                            }
+
+                            @Override
+                            public void onNext(Integer integer) {
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onNext########"+ integer);
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                t.printStackTrace();
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+            }
+        });
+
+        testBUFFER.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Flowable.create(new FlowableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(@NonNull FlowableEmitter<Integer> emitter) throws Exception {
+                        for (int j = 0; j < 1000; j++) {
+                            emitter.onNext(j);
+                        }
+                    }
+                },BackpressureStrategy.BUFFER)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new FlowableSubscriber<Integer>() {
+                            @Override
+                            public void onSubscribe(@NonNull Subscription s) {
+                                s.request(Long.MAX_VALUE);
+                            }
+
+                            @Override
+                            public void onNext(Integer integer) {
+                                try {
+                                    Thread.sleep(10);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onNext########"+ integer);
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                t.printStackTrace();
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+            }
+        });
+
+        testDROP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Flowable.create(new FlowableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(@NonNull FlowableEmitter<Integer> emitter) throws Exception {
+                        for (int j = 0; j < 1000; j++) {
+                            emitter.onNext(j);
+                        }
+                    }
+                },BackpressureStrategy.DROP)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new FlowableSubscriber<Integer>() {
+                            @Override
+                            public void onSubscribe(@NonNull Subscription s) {
+                                s.request(Long.MAX_VALUE);
+                            }
+
+                            @Override
+                            public void onNext(Integer integer) {
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onNext########"+ integer);
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                t.printStackTrace();
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+            }
+        });
+        testLATEST.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Flowable.create(new FlowableOnSubscribe<Integer>() {
+                    @Override
+                    public void subscribe(@NonNull FlowableEmitter<Integer> emitter) throws Exception {
+                        for (int j = 0; j < 1000; j++) {
+                            emitter.onNext(j);
+                        }
+                    }
+                },BackpressureStrategy.LATEST)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new FlowableSubscriber<Integer>() {
+                            @Override
+                            public void onSubscribe(@NonNull Subscription s) {
+                                s.request(Long.MAX_VALUE);
+                            }
+
+                            @Override
+                            public void onNext(Integer integer) {
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                OsduiLog.mtuiHintLog(TAG,"########Observer onNext########"+ integer);
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                t.printStackTrace();
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+            }
+        });
     }
 
 
+    public static class UserBean {
+        String name;
+        int age;
+
+        public UserBean(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+    }
+
+    private static int retryCount = 0;
+    private static int maxRetries = 2;
 
     int i = 10;
     /**
