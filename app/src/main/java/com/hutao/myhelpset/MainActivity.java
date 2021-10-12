@@ -14,6 +14,8 @@ import com.hutao.myhelpset.tool.annotation.RegisterView;
 import com.hutao.myhelpset.tool.leakcanary.LeakCanaryAcitvity;
 import com.hutao.myhelpset.tool.profiler.ProfilerAcitvity;
 import com.hutao.myhelpset.tool.rxjava.RxJavaAcitvity;
+import com.hutao.myhelpset.tool.rxjava.RxJavaDemoActivity;
+import com.hutao.myhelpset.tool.rxjava.RxJavaHighLevelActivity;
 
 /**
  * @description 测试主act入口
@@ -31,7 +33,11 @@ public class MainActivity extends BaseActivity {
     private Button testBtnOkHttp;
     @RegisterView(id = R.id.testBtnRxjava)
     private Button testBtnRxjava;
-    
+    @RegisterView(id = R.id.testBtnRxjavaDemo)
+    private Button testBtnRxjavaDemo;
+    @RegisterView(id = R.id.testBtnRxjavaHighLevel)
+    private Button testBtnRxjavaHighLevel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +76,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void createListeners() {
-
+        testBtnRxjavaDemo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(RxJavaDemoActivity.class);
+            }
+        });
     }
     
     /**
@@ -85,6 +96,12 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 openActivity(RxJavaAcitvity.class);
+            }
+        });
+        testBtnRxjavaHighLevel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(RxJavaHighLevelActivity.class);
             }
         });
     }

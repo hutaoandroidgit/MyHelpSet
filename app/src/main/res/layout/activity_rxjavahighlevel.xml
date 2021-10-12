@@ -14,63 +14,63 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="实战1：模拟倒计时59秒发送验证码">
+            android:text="高级1：自定义operator（操作符）">
         </TextView>
         <Button
-            android:id="@+id/btnCode"
+            android:id="@+id/btnOperator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title1"
-            android:text="发送验证码">
+            android:text="CustomOperator">
         </Button>
         <TextView
             android:id="@+id/title2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnCode"
-            android:text="实战1：防暴力点击">
+            app:layout_constraintTop_toBottomOf="@+id/btnOperator"
+            android:text="高级2：自定义Transformer（批量操作符）">
         </TextView>
         <Button
-            android:id="@+id/btnView"
+            android:id="@+id/btnTransformer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title2"
-            android:text="点我">
+            android:text="CustomTransformer">
         </Button>
         <TextView
             android:id="@+id/title3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnView"
-            android:text="实战1：合并获取缓存与网络数据">
+            app:layout_constraintTop_toBottomOf="@+id/btnTransformer"
+            android:text="高级3：自定义Plugin（插件）">
         </TextView>
         <Button
-            android:id="@+id/btnGet1"
+            android:id="@+id/btnPlugin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title3"
-            android:text="查询1 2">
+            android:text="CustomPlugin">
         </Button>
-        <Button
-            android:id="@+id/btnGet2"
+        <TextView
+            android:id="@+id/title4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnGet1"
-            android:text="查询1 3 4">
-        </Button>
+            app:layout_constraintTop_toBottomOf="@+id/btnPlugin"
+            android:text="高级4：Subject(代理)以及PublishSubject">
+        </TextView>
         <Button
-            android:id="@+id/btnGet3"
+            android:id="@+id/btnSubject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnGet2"
-            android:text="查询1 2 3 4">
+            app:layout_constraintTop_toBottomOf="@+id/title4"
+            android:text="Subject">
         </Button>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

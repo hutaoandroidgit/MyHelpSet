@@ -47,5 +47,23 @@
         app:layout_constraintTop_toTopOf="parent"
         android:singleLine="true">
     </Button>
+    <Button
+        android:id="@+id/testBtnRxjavaDemo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RxjavaDemo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/testBtnRxjava"
+        android:singleLine="true">
+    </Button>
+    <Button
+        android:id="@+id/testBtnRxjavaHighLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RxjavaHighLevel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/testBtnRxjavaDemo"
+        android:singleLine="true">
+    </Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
