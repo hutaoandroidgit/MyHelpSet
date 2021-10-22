@@ -65,5 +65,23 @@
         app:layout_constraintTop_toBottomOf="@+id/testBtnRxjavaDemo"
         android:singleLine="true">
     </Button>
+    <Button
+        android:id="@+id/testBtnRxjavaRetrofit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RxjavaRetrofit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/testBtnRxjavaHighLevel"
+        android:singleLine="true">
+    </Button>
+    <Button
+        android:id="@+id/testBtnModeTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设计模式"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/testBtnRxjavaRetrofit"
+        android:singleLine="true">
+    </Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

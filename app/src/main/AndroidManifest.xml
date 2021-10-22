@@ -24,6 +24,11 @@
         <activity android:name=".tool.rxjava.RxJavaAcitvity"></activity>
         <activity android:name=".tool.rxjava.RxJavaDemoActivity"></activity>
         <activity android:name=".tool.rxjava.RxJavaHighLevelActivity"></activity>
+        <activity android:name=".tool.rxjava.RxJavaRetrofitActivity"></activity>
+        <activity android:name=".tool.rxjava.RxLifecycleActivity"></activity>
+        <activity android:name=".tool.rxjava.mvp.RealViewActivity"></activity>
+        <activity android:name=".tool.rxjava.code.CodeActivity"></activity>
+        <activity android:name=".mode.TestActivity"></activity>
     </application>
 
 </manifest>

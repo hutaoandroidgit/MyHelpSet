@@ -7,8 +7,9 @@ import android.widget.Button;
 import com.hutao.helplibrary.Tool;
 import com.hutao.helplibrary.log.OsduiLog;
 import com.hutao.myhelpset.base.BaseActivity;
-import com.hutao.myhelpset.mode.observer.MilkConsumer;
-import com.hutao.myhelpset.mode.observer.MilkFactory;
+import com.hutao.myhelpset.mode.TestActivity;
+import com.hutao.myhelpset.mode.action_mode.observermode.MilkConsumer;
+import com.hutao.myhelpset.mode.action_mode.observermode.MilkFactory;
 import com.hutao.myhelpset.tool.okhttp.OkHttpAcitvity;
 import com.hutao.myhelpset.tool.annotation.RegisterView;
 import com.hutao.myhelpset.tool.leakcanary.LeakCanaryAcitvity;
@@ -16,6 +17,7 @@ import com.hutao.myhelpset.tool.profiler.ProfilerAcitvity;
 import com.hutao.myhelpset.tool.rxjava.RxJavaAcitvity;
 import com.hutao.myhelpset.tool.rxjava.RxJavaDemoActivity;
 import com.hutao.myhelpset.tool.rxjava.RxJavaHighLevelActivity;
+import com.hutao.myhelpset.tool.rxjava.RxJavaRetrofitActivity;
 
 /**
  * @description 测试主act入口
@@ -37,7 +39,10 @@ public class MainActivity extends BaseActivity {
     private Button testBtnRxjavaDemo;
     @RegisterView(id = R.id.testBtnRxjavaHighLevel)
     private Button testBtnRxjavaHighLevel;
-
+    @RegisterView(id = R.id.testBtnRxjavaRetrofit)
+    private Button testBtnRxjavaRetrofit;
+    @RegisterView(id = R.id.testBtnModeTest)
+    private Button testBtnModeTest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +109,18 @@ public class MainActivity extends BaseActivity {
                 openActivity(RxJavaHighLevelActivity.class);
             }
         });
+        testBtnRxjavaRetrofit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(RxJavaRetrofitActivity.class);
+            }
+        });
+        testBtnModeTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(TestActivity.class);
+            }
+        });
     }
     
     /**
@@ -137,6 +154,12 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 //模拟内存泄漏代码
                 openActivity(OkHttpAcitvity.class);
+            }
+        });
+        testBtnRxjavaRetrofit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivity(RxJavaRetrofitActivity.class);
             }
         });
     }
