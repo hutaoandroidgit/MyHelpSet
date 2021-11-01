@@ -1,11 +1,18 @@
 package com.hutao.myhelpset;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.view.View;
 import android.widget.Button;
 
 import com.hutao.helplibrary.Tool;
 import com.hutao.helplibrary.log.OsduiLog;
+import com.hutao.myappfw.IMyAidlInterface;
 import com.hutao.myhelpset.base.BaseActivity;
 import com.hutao.myhelpset.mode.TestActivity;
 import com.hutao.myhelpset.mode.action_mode.observermode.MilkConsumer;
@@ -43,6 +50,7 @@ public class MainActivity extends BaseActivity {
     private Button testBtnRxjavaRetrofit;
     @RegisterView(id = R.id.testBtnModeTest)
     private Button testBtnModeTest;
+    private IMyAidlInterface iMyAidlInterface;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +74,23 @@ public class MainActivity extends BaseActivity {
         //testObserver();
         //测试Rxjava功能用法
         testRxJava();
-    }
 
+        //测试aidl
+        Intent intent = new Intent("com.hutao.myappfw.aidlService");
+        intent.setPackage("com.hutao.myappfw");
+        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+    }
+    ServiceConnection mServiceConnection  = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            iMyAidlInterface = IMyAidlInterface.Stub.asInterface(service);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_main;
@@ -118,7 +141,12 @@ public class MainActivity extends BaseActivity {
         testBtnModeTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openActivity(TestActivity.class);
+                //openActivity(TestActivity.class);
+                try {
+                    testBtnModeTest.setText(iMyAidlInterface.getStudentinfo().getName());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

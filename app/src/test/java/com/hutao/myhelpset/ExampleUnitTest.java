@@ -40,4 +40,9 @@ public class ExampleUnitTest {
         Singleton singeton2 = (Singleton) con.newInstance();
         System.out.println(singeton1==singeton2);//结果为false,singeton1和singeton2将是两个不同的实例
     }
+
+    @Test
+    public void test3() {
+
+    }
 }

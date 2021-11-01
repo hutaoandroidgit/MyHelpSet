@@ -25,7 +25,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/aidl']
+            aidl.srcDirs = ['src/main/aidl']
+        }
+    }
     lintOptions {
         // 设置为 true，则当 Lint 发现错误时停止 Gradle 构建
         abortOnError false
